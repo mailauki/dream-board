@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { DreamItem } from "@/utils/types";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -139,6 +140,7 @@ export const addItem = async (formData: FormData) => {
 	console.log(url);
 
 	const { data: { user } } = await supabase.auth.getUser();
+
 	const { data, error } = await supabase
 	.from('dreams')
 	.insert([
@@ -152,28 +154,51 @@ export const addItem = async (formData: FormData) => {
 
 	console.log(data);
 	redirect("/dreams");
-	// try {
-	// 	const supabase = await createClient();
-	// 	const { data: { user } } = await supabase.auth.getUser();
-	// 	const { data, error } = await supabase
-	// 	.from('dreams')
-	// 	.insert([
-	// 		{ url: url, user_id: user?.id },
-	// 	])
-  //   .select('*');
+}
 
-  //   if (error) {
-  //     throw error; // Throw the Supabase error to be caught
-  //   }
+export const updateItem = async (formData: FormData) => {
+	const supabase = await createClient();
+	const id = formData.get("id")?.toString();
+	const url = formData.get("url")?.toString();
+	const title = formData.get("title")?.toString();
+	const description = formData.get("description")?.toString();
+	const price_amount = formData.get("price-amount")?.toString();
+	const price_currency = formData.get("price-currency")?.toString();
+	console.log({ id, url, title, description, price_amount, price_currency });
 
-  //   console.log('Data fetched successfully:', data);
-  //   return data;
-  // } catch (error) {
-  //   console.error('An error occurred:', error.message);
-  //   // Handle the error, e.g., display a user-friendly message
-  //   return null; // Or handle the error in another way
-  // } finally {
-  //   // This block will always execute, even if there was an error or not
-  //   console.log('Fetch operation completed.');
-  // }
+	function formatFormData({ id, url, title, description, price_amount, price_currency, user_id }: DreamItem) {
+		const dataTitle = !title ? null : title;
+		const dataDescription = !description ? null : description;
+		const dataPriceAmount = (!price_amount || price_amount == 0) ? null : price_amount;
+		const dataPriceCurrency = (!price_amount || price_amount == 0) ? null : !price_currency ? "USD": price_currency;
+		
+		return Object.assign({
+			id,
+			url,
+			user_id,
+			title: dataTitle,
+			description: dataDescription,
+			price_amount: dataPriceAmount,
+			price_currency: dataPriceCurrency,
+		});
+	}
+
+	const { data: { user } } = await supabase.auth.getUser();
+
+	const formattedFormData = formatFormData({ id: Number(id), url: url!, title, description, price_amount: Number(price_amount || 0), price_currency, user_id: user?.id! });
+
+	console.log(formattedFormData)
+
+	const { data, error } = await supabase
+	.from('dreams')
+  .update(formattedFormData)
+  .eq('id', formattedFormData.id)
+	.select('*');
+	
+	if (error) {
+		throw error; // Throw the Supabase error to be caught
+	}
+
+	console.log({data});
+	redirect(`/dreams/${id}`);
 }
