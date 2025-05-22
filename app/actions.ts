@@ -132,3 +132,48 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const addItem = async (formData: FormData) => {
+	const supabase = await createClient();
+	const url = formData.get("url")?.toString();
+	console.log(url);
+
+	const { data: { user } } = await supabase.auth.getUser();
+	const { data, error } = await supabase
+	.from('dreams')
+	.insert([
+		{ url: url, user_id: user?.id },
+	])
+	.select('*');
+	
+	if (error) {
+		throw error; // Throw the Supabase error to be caught
+	}
+
+	console.log(data);
+	redirect("/dreams");
+	// try {
+	// 	const supabase = await createClient();
+	// 	const { data: { user } } = await supabase.auth.getUser();
+	// 	const { data, error } = await supabase
+	// 	.from('dreams')
+	// 	.insert([
+	// 		{ url: url, user_id: user?.id },
+	// 	])
+  //   .select('*');
+
+  //   if (error) {
+  //     throw error; // Throw the Supabase error to be caught
+  //   }
+
+  //   console.log('Data fetched successfully:', data);
+  //   return data;
+  // } catch (error) {
+  //   console.error('An error occurred:', error.message);
+  //   // Handle the error, e.g., display a user-friendly message
+  //   return null; // Or handle the error in another way
+  // } finally {
+  //   // This block will always execute, even if there was an error or not
+  //   console.log('Fetch operation completed.');
+  // }
+}
