@@ -5,11 +5,9 @@ import { Button } from "./ui/button";
 
 export default function Modal({
 	title,
-	action,
   children,
 }: Readonly<{
 	title: string;
-	action?: (formData: FormData) => Promise<void>;
   children: React.ReactNode;
 }>) {
   const [open, setOpen] = useState(false);

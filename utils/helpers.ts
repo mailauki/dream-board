@@ -1,6 +1,5 @@
-
 import { JSDOM } from "jsdom";
-import type { MetaTags, Tags } from "./types";
+import type { MetaTags, Tags } from "@/types/types";
 
 export function formatPrice({
 	price_amount,

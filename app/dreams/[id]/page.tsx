@@ -18,7 +18,7 @@ export default async function DreamItemPage({
 	const { data } = await supabase
 		.from('dreams')
 		.select('*')
-		.eq('id', id)
+		.eq('id', Number(id))
 		.maybeSingle()
 
   return (
@@ -35,38 +35,38 @@ export default async function DreamItemPage({
 					</Link>
 				</Button>
 			</div>
-			<LinkPreview data={data} />
+			<LinkPreview data={data!} />
 			<div className="flex gap-x-3 justify-between">
 				<Modal title="Update item">
-				<form>
-					<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-						<Label htmlFor="id">ID</Label>
-						<Input aria-label='item-id-input' placeholder='https://url-link-of-item.com' name='id' defaultValue={data.id} readOnly />
-					</div>
-					<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-						<Label htmlFor="url">URL</Label>
-						<Input aria-label='item-url-input' placeholder='https://url-link-of-item.com' name='url' defaultValue={data.url} />
-					</div>
-					<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-						<Label htmlFor="title">Title</Label>
-						<Input aria-label='item-title-input' placeholder='Custom item title' name='title' defaultValue={data.title} />
-					</div>
-					<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-						<Label htmlFor="description">Description</Label>
-						<Input aria-label='item-description-input' placeholder='Custom item description' name='description' defaultValue={data.description} />
-					</div>
-					<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-						<Label htmlFor="price-amount">Price amount</Label>
-						<Input type="number" aria-label='item-price-amount-input' placeholder='0.00' name='price-amount' defaultValue={data.price_amount} />
-					</div>
-					<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-						<Label htmlFor="currency">Currency</Label>
-						<Input aria-label='item-currency-input' placeholder='USD' name='currency' defaultValue={data.price_currency} />
-					</div>
-					<SubmitButton pendingText="Updating item..." formAction={updateItem}>
-						Update item
-					</SubmitButton>
-				</form>
+					<form>
+						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
+							<Label htmlFor="id">ID</Label>
+							<Input aria-label='item-id-input' placeholder='https://url-link-of-item.com' name='id' defaultValue={data!.id} readOnly />
+						</div>
+						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
+							<Label htmlFor="url">URL</Label>
+							<Input aria-label='item-url-input' placeholder='https://url-link-of-item.com' name='url' defaultValue={data!.url} />
+						</div>
+						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
+							<Label htmlFor="title">Title</Label>
+							<Input aria-label='item-title-input' placeholder='Custom item title' name='title' defaultValue={data!.title!} />
+						</div>
+						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
+							<Label htmlFor="description">Description</Label>
+							<Input aria-label='item-description-input' placeholder='Custom item description' name='description' defaultValue={data!.description!} />
+						</div>
+						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
+							<Label htmlFor="price-amount">Price amount</Label>
+							<Input type="number" aria-label='item-price-amount-input' placeholder='0.00' name='price-amount' defaultValue={data!.price_amount!} />
+						</div>
+						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
+							<Label htmlFor="currency">Currency</Label>
+							<Input aria-label='item-currency-input' placeholder='USD' name='currency' defaultValue={data!.price_currency!} />
+						</div>
+						<SubmitButton pendingText="Updating item..." formAction={updateItem}>
+							Update item
+						</SubmitButton>
+					</form>
 				</Modal>
 				<Button aria-label="Delete" size={'icon'} variant={'destructive'}>
 					<span>

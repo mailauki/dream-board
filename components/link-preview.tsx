@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
-import type { DreamItem } from "@/utils/types";
 import { extractMetaTags, formatPrice } from "@/utils/helpers";
+import type { Tables } from "@/types/supabase";
 
-async function LinkPreview({ data }: { data: DreamItem }) {
+async function LinkPreview({ data }: { data: Tables<'dreams'> }) {
   const meta = await extractMetaTags(data.url);
 
   if (!meta) {
@@ -29,7 +29,7 @@ async function LinkPreview({ data }: { data: DreamItem }) {
 			</Link>
 			<div className="w-full flex justify-between items-center gap-x-4 text-xs">
 				<p className="text-2xl font-semibold text-gray-900 dark:text-gray-400">
-					{formatPrice({ price_amount: data.price_amount, price_currency: data.price_currency, meta_data: meta })}
+					{formatPrice({ price_amount: data.price_amount!, price_currency: data.price_currency!, meta_data: meta })}
 				</p>
 				<Button asChild size="sm" variant={"default"}>
 					<Link href={data.url || meta.baseURL} target="_blank">
