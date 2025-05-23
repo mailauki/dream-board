@@ -207,3 +207,19 @@ export const updateItem = async (formData: FormData) => {
 	console.log({data});
 	redirect(`/dreams/${id}`);
 }
+
+export const deleteItem = async (formData: FormData) => {
+	const supabase = await createClient();
+	const id = formData.get("id")?.toString();
+
+	const { error } = await supabase
+	.from('dreams')
+  .delete()
+  .eq('id', Number(id!))
+	
+	if (error) {
+		throw error; // Throw the Supabase error to be caught
+	}
+
+	redirect("/dreams");
+}

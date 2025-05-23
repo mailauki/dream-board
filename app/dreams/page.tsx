@@ -18,7 +18,7 @@ export default async function DreamsPage() {
 					<form>
 						<div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
 							<Label htmlFor="url">URL</Label>
-							<Input aria-label='item-url-input' placeholder='https://url-link-of-item.com' name='url' />
+							<Input type="url" aria-label='Item url' placeholder='https://url-link-of-item.com' name='url' />
 						</div>
 						<SubmitButton pendingText="Adding item..." formAction={addItem}>
 							Add item
