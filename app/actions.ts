@@ -166,7 +166,7 @@ export const updateItem = async (formData: FormData) => {
 	const price_currency = formData.get("price-currency")?.toString();
 	console.log({ id, url, title, description, price_amount, price_currency });
 
-	function formatFormData({ url, title, description, price_amount, price_currency }:  Omit<Tables<'dreams'>, "id"| "created_at">) {
+	function formatFormData({ url, title, description, price_amount, price_currency }: Omit<Tables<'dreams'>, "id"| "created_at">) {
 		const dataTitle = !title ? null : title;
 		const dataDescription = !description ? null : description;
 		const dataPriceAmount = (!price_amount || price_amount == 0) ? null : price_amount;
@@ -183,7 +183,7 @@ export const updateItem = async (formData: FormData) => {
 
 	const { data: { user } } = await supabase.auth.getUser();
 
-	const formattedFormData = formatFormData({
+	const formattedFormData: Omit<Tables<'dreams'>, "id"| "created_at"> = formatFormData({
 		url: url!,
 		title: title!,
 		description: description!,

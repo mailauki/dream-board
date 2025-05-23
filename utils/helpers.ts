@@ -1,5 +1,6 @@
 import { JSDOM } from "jsdom";
 import type { MetaTags, Tags } from "@/types/types";
+import type { Tables } from "@/types/supabase";
 
 export function formatPrice({
 	price_amount,
@@ -8,7 +9,7 @@ export function formatPrice({
 }: {
 	price_amount?: number;
 	price_currency?: string;
-	meta_data: MetaTags;
+	meta_data?: MetaTags;
 }) {
 	if (price_amount && price_currency) {
 		return Intl.NumberFormat('en', {
@@ -16,8 +17,7 @@ export function formatPrice({
 			style: 'currency',
 			trailingZeroDisplay: "stripIfInteger"
 		}).format(Number(price_amount));
-	}
-	else if (meta_data.price && meta_data.currency) {
+	} else if (meta_data && meta_data.price && meta_data.currency) {
 		return Intl.NumberFormat('en', {
 			currency: meta_data.currency,
 			style: 'currency',
