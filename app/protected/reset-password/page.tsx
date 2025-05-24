@@ -1,13 +1,14 @@
-import { resetPasswordAction } from "@/app/actions";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { resetPasswordAction } from '@/app/actions'
+import { FormMessage, Message } from '@/components/form-message'
+import { SubmitButton } from '@/components/submit-button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export default async function ResetPassword(props: {
   searchParams: Promise<Message>;
 }) {
-  const searchParams = await props.searchParams;
+  const searchParams = await props.searchParams
+
   return (
     <form className="flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4">
       <h1 className="text-2xl font-medium">Reset password</h1>
@@ -16,22 +17,22 @@ export default async function ResetPassword(props: {
       </p>
       <Label htmlFor="password">New password</Label>
       <Input
-        type="password"
+        required
         name="password"
         placeholder="New password"
-        required
+        type="password"
       />
       <Label htmlFor="confirmPassword">Confirm password</Label>
       <Input
-        type="password"
+        required
         name="confirmPassword"
         placeholder="Confirm password"
-        required
+        type="password"
       />
       <SubmitButton formAction={resetPasswordAction}>
         Reset password
       </SubmitButton>
       <FormMessage message={searchParams} />
     </form>
-  );
+  )
 }
