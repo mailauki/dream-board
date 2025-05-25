@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
-import { signOutAction } from '@/app/actions'
 import { hasEnvVars } from '@/utils/supabase/check-env-vars'
 import { createClient } from '@/utils/supabase/server'
 
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
+import Avatar from './ui/avatar'
 
 
 export default async function AuthButton() {
@@ -54,12 +54,8 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOutAction}>
-        <Button type="submit" variant={'outline'}>
-          Sign out
-        </Button>
-      </form>
+      Hey, {user.user_metadata.display_name || user.email}!
+      <Avatar url={user.user_metadata.avatar_url} />
     </div>
   ) : (
     <div className="flex gap-2">

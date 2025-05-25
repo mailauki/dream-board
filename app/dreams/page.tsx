@@ -1,4 +1,4 @@
-import { addItem } from '@/app/actions'
+import { addItem } from '@/actions/items'
 import { SubmitButton } from '@/components/submit-button'
 import { Input } from '@/components/ui/input'
 import { createClient } from '@/utils/supabase/server'
