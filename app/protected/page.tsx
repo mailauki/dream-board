@@ -24,6 +24,15 @@ export default async function ProtectedPage() {
 
   const displayName = user.user_metadata.display_name
   const avatarUrl = user.user_metadata.avatar_url
+  const { count: dreamsCount } = await supabase
+    .from('dreams')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+  const { count: friendsCount } = await supabase
+    .from('friends')
+    .select('*', { count: 'exact', head: true })
+    .eq('accepted', true)
+    .or(`sent.eq.${user.id},received.eq.${user.id}`)
 
   return (
     <>
@@ -44,11 +53,13 @@ export default async function ProtectedPage() {
       <div className="flex-1 w-full flex flex-col gap-12">
         <div className="flex flex-col gap-2 items-start">
           <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-          <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
+          {/* <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
             {JSON.stringify(user, null, 2)}
-          </pre>
+          </pre> */}
           <div className="flex w-full max-w-xl flex-col items-start justify-between rounded border p-2">
             <UploadAvatar uid={user.id} url={avatarUrl} />
+            <div>Dreams: <span>{dreamsCount}</span></div>
+            <div>Friends: <span>{friendsCount || 0}</span></div>
             <div className='w-full'>
               <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
                 <Label htmlFor="display_name">Email</Label>
