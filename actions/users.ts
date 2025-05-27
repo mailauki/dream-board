@@ -12,7 +12,7 @@ export const updateUser = async (formData: FormData) => {
   const { error } = await supabase.auth.updateUser({ data: { display_name } })
 
   if (error) {
-    throw error // Throw the Supabase error to be caught
+    throw error
   }
 
   redirect('/protected')

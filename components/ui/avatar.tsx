@@ -3,10 +3,11 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { UserIcon } from 'lucide-react'
 
 import { createClient } from '@/utils/supabase/client'
 
-export default function Avatar({ url }: { url: string }) {
+export default function Avatar({ url }: { url?: string | null }) {
   const supabase = createClient()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
 
@@ -39,7 +40,9 @@ export default function Avatar({ url }: { url: string }) {
           width={40}
         />
       ) : (
-        <div className="bg-gray-300 rounded-full w-10 h-10" />
+        <div className="mx-auto flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-200 text-gray-500 dark:bg-gray-700">
+          <UserIcon />
+        </div>
       )}
     </>
   )

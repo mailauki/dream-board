@@ -77,7 +77,7 @@ export const updateItem = async (formData: FormData) => {
     .select('*')
 
   if (error) {
-    throw error // Throw the Supabase error to be caught
+    throw error
   }
 
   console.log({data})
@@ -86,15 +86,15 @@ export const updateItem = async (formData: FormData) => {
 
 export const deleteItem = async (formData: FormData) => {
   const supabase = await createClient()
-  const id = formData.get('id')?.toString()
+  const item_id = formData.get('id')?.toString()
 
   const { error } = await supabase
     .from('dreams')
     .delete()
-    .eq('id', Number(id!))
+    .eq('id', Number(item_id!))
 
   if (error) {
-    throw error // Throw the Supabase error to be caught
+    throw error
   }
 
   redirect('/dreams')

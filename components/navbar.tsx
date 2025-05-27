@@ -12,6 +12,7 @@ export default function Navbar() {
         <div className="flex gap-5 items-center font-semibold">
           <Link href={'/'}>Home</Link>
           <Link href={'/dreams'}>Dreams</Link>
+          <Link href={'/friends'}>Friends</Link>
         </div>
         {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
       </div>
