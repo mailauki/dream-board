@@ -24,7 +24,7 @@ export const addItem = async (formData: FormData) => {
     .select('*')
 
   if (error) {
-    throw error // Throw the Supabase error to be caught
+    throw error
   }
 
   console.log(data)
@@ -33,12 +33,12 @@ export const addItem = async (formData: FormData) => {
 
 export const updateItem = async (formData: FormData) => {
   const supabase = await createClient()
-  const id = formData.get('id')?.toString()
+  const id = formData.get('item-id')?.toString()
   const url = formData.get('url')?.toString()
   const title = formData.get('title')?.toString()
   const description = formData.get('description')?.toString()
-  const price_amount = formData.get('price_amount')?.toString()
-  const price_currency = formData.get('price_currency')?.toString()
+  const price_amount = formData.get('price-amount')?.toString()
+  const price_currency = formData.get('price-currency')?.toString()
 
   console.log({ id, url, title, description, price_amount, price_currency })
 

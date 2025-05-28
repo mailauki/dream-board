@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { PlusIcon, XIcon } from 'lucide-react'
+import { PlusIcon, SearchIcon, XIcon } from 'lucide-react'
 
 import { createClient } from '@/utils/supabase/server'
 import Avatar from '@/components/ui/avatar'
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { acceptFriendRequest, denyFriendRequest } from '@/actions/friends'
 import { Label } from '@/components/ui/label'
+import Toolbar from '@/components/toolbar'
 
 export default async function FriendsPage() {
   const supabase = await createClient()
@@ -37,6 +38,21 @@ export default async function FriendsPage() {
 
   return (
     <>
+      <Toolbar>
+        <form>
+          <Label>
+            <SearchIcon size="16" />
+          </Label>
+          <Input placeholder='Search...' />
+        </form>
+        <div className="w-full">
+          <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
+            <SearchIcon size="16" />
+          This is a protected page that you can only see as an authenticated
+          user
+          </div>
+        </div>
+      </Toolbar>
       <div className="flex-1 w-full flex flex-col gap-12">
         <div className="flex flex-col gap-2 items-start">
           <h2 className="font-bold text-2xl mb-4">Your friends</h2>

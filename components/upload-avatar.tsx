@@ -9,8 +9,9 @@ import { createClient } from '@/utils/supabase/client'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Button } from './ui/button'
+import Avatar from './ui/avatar'
 
-export default function UploadAvatar({ url, uid }: { url: string, uid: string }) {
+export default function UploadAvatar({ url, uid }: { url?: string | null, uid: string }) {
   const supabase = createClient()
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -47,12 +48,16 @@ export default function UploadAvatar({ url, uid }: { url: string, uid: string })
       if (uploadError) {
         throw uploadError
       }
-      // onUpload(filePath)
 
-      const { error } = await supabase.auth.updateUser({ data: { avatar_url: filePath } })
+      const { error: userError } = await supabase.auth.updateUser({ data: { avatar_url: filePath } })
 
-      if (error) {
-        throw error // Throw the Supabase error to be caught
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: filePath, updated_at: new Date().toISOString() })
+        .eq('user_id', uid)
+
+      if (userError || profileError) {
+        throw userError || profileError
       }
     } catch (error) {
       console.log(error)
@@ -63,39 +68,37 @@ export default function UploadAvatar({ url, uid }: { url: string, uid: string })
   }
 
   return (
-    <>
+    <div className="mt-2 flex items-center gap-x-3">
+      {avatarUrl ? (
+        <Image
+          alt="Avatar"
+          className='rounded-full m-1'
+          height={40}
+          src={avatarUrl}
+          width={40}
+        />
+      ) : (
+        <Avatar />
+      )}
       <div>
-        {avatarUrl ? (
-          <Image
-            alt="Avatar"
-            className='rounded'
-            height={160}
-            src={avatarUrl}
-            width={160}
-          />
-        ) : (
-          <div className="bg-gray-300 rounded w-40 h-40" />
-        )}
-        <div className='w-40'>
-          <Button asChild className='w-full mt-2 mb-3'>
-            <Label htmlFor="avatar_file">
-              {uploading ? 'Uploading ...' : 'Upload'}
-            </Label>
-          </Button>
-          <Input
-            accept="image/*"
-            disabled={uploading}
-            id="avatar_file"
-            name="avatar_file"
-            style={{
-              visibility: 'hidden',
-              position: 'absolute',
-            }}
-            type="file"
-            onChange={uploadAvatar}
-          />
-        </div>
+        <Button asChild variant={'outline'}>
+          <Label htmlFor="avatar_file">
+            {uploading ? 'Changing...' : 'Change'}
+          </Label>
+        </Button>
+        <Input
+          accept="image/*"
+          disabled={uploading}
+          id="avatar_file"
+          name="avatar_file"
+          style={{
+            visibility: 'hidden',
+            position: 'absolute',
+          }}
+          type="file"
+          onChange={uploadAvatar}
+        />
       </div>
-    </>
+    </div>
   )
 }

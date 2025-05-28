@@ -104,12 +104,27 @@ export default function PriceInput({
       </div>
 
       <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
-        <Label htmlFor="price_amount">Price amount</Label>
-        <Input readOnly aria-label='Item price amount' defaultValue={Number(amount)} name='price_amount' placeholder='0.00' type="number" />
+        <Label htmlFor="price-amount">Price amount</Label>
+        <Input
+          readOnly
+          aria-label='Item price amount'
+          defaultValue={Number(amount)}
+          id='price-amount'
+          name='price-amount'
+          placeholder='0.00'
+          type="number"
+        />
       </div>
       <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
-        <Label htmlFor="price_currency">Currency</Label>
-        <Input readOnly aria-label='Item price currency' defaultValue={currency || ''} name='price_currency' placeholder='USD' />
+        <Label htmlFor="price-currency">Currency</Label>
+        <Input
+          readOnly
+          aria-label='Item price currency'
+          defaultValue={currency || ''}
+          id='price-currency'
+          name='price-currency'
+          placeholder='USD'
+        />
       </div>
     </>
   )
