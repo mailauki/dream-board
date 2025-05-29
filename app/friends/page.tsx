@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { PlusIcon, XIcon } from 'lucide-react'
+import { MoreVerticalIcon, PlusIcon, XIcon } from 'lucide-react'
+import Link from 'next/link'
 
 import { createClient } from '@/utils/supabase/server'
 import UserChip from '@/components/ui/user-chip'
@@ -26,16 +27,6 @@ export default async function FriendsPage() {
     .select('id, accepted, created_at, from:profiles!friends_sender_id_fkey(*), to:profiles!friends_receiver_id_fkey(*)')
     .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
 
-  const friendList = friends?.map((friend) => {
-    if (friend.from?.user_id !== user.id) return Object.assign({
-      ...friend.from,
-      id: friend.id,
-      accepted: friend.accepted
-    })
-    else if (friend.to?.user_id !== user.id) return friend.to
-    else return null
-  })
-
   return (
     <>
       <SearchInput />
@@ -45,30 +36,64 @@ export default async function FriendsPage() {
           {/* <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
             {JSON.stringify(friends, null, 2)}
           </pre> */}
-          {(!friendList || friendList.length === 0) ? (
+          {(!friends || friends.length === 0) ? (
             <p>No friends yet</p>
           ) : (
-            friendList.map((friend) => (
-              <UserChip
-                key={friend?.id}
-                action={!friend.accepted && (
-                  <form className='flex gap-x-2'>
-                    <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
-                      <Label htmlFor="id">ID</Label>
-                      <Input readOnly aria-label='item-id-input' defaultValue={friend.id} name='friend_id' type="number" />
-                    </div>
-                    <Button className='rounded-full'  formAction={acceptFriendRequest} size={'icon'} variant={'accept'}>
-                      <PlusIcon />
+            friends.map((friend) => (
+              friend.to?.user_id === user.id ? (
+                <UserChip
+                  key={friend?.id}
+                  action={
+                    <form className='flex gap-x-2'>
+                      <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
+                        <Label htmlFor="friend-id">Friend ID</Label>
+                        <Input
+                          readOnly
+                          defaultValue={friend.id}
+                          id='friend-id'
+                          name='friend-id'
+                          type="number"
+                        />
+                      </div>
+                      {!friend.accepted && (
+                        <Button
+                          className='size-12'
+                          formAction={acceptFriendRequest}
+                          size={'icon'}
+                          variant={'accept'}
+                        >
+                          <PlusIcon />
+                        </Button>
+                      )}
+                      <Button
+                        className='size-12'
+                        formAction={denyFriendRequest}
+                        size={'icon'}
+                        variant={'deny'}
+                      >
+                        <XIcon />
+                      </Button>
+                    </form>
+                  }
+                  avatar={<Avatar url={friend.from?.avatar_url || ''} />}
+                  subheader={friend.from?.username}
+                  title={`${friend.from?.first_name} ${friend.from?.last_name || ''}`}
+                />
+              ) : (
+                <UserChip
+                  key={friend?.id}
+                  action={
+                    <Button asChild className='size-12' size={'icon'} variant={'secondary'}>
+                      <Link href={`/users/${friend.to?.username}`}>
+                        <MoreVerticalIcon />
+                      </Link>
                     </Button>
-                    <Button className='rounded-full' formAction={denyFriendRequest} size={'icon'} variant={'deny'}>
-                      <XIcon />
-                    </Button>
-                  </form>
-                )}
-                avatar={<Avatar url={friend?.avatar_url} />}
-                subheader={friend?.username}
-                title={`${friend?.first_name} ${friend?.last_name || ''}`}
-              />
+                  }
+                  avatar={<Avatar url={friend.to?.avatar_url || ''} />}
+                  subheader={friend.to?.username}
+                  title={`${friend.to?.first_name} ${friend.to?.last_name || ''}`}
+                />
+              )
             )))}
         </div>
       </div>

@@ -16,6 +16,7 @@ const avatarVariants = cva(
     variants: {
       size: {
         default: 'border-[6px] size-12',
+        sm: 'border-4 size-9',
         lg: 'border-8 size-20',
       },
     },
@@ -30,6 +31,7 @@ const iconVariants = cva(
     variants: {
       size: {
         default: 'size-12',
+        sm: 'size-9',
         lg: 'size-20',
       },
     },

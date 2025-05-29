@@ -55,7 +55,7 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4">
       Hey, {user.user_metadata.display_name || user.email}!
-      <Avatar url={user.user_metadata.avatar_url} />
+      <Avatar size={'sm'} url={user.user_metadata.avatar_url} />
     </div>
   ) : (
     <div className="flex gap-2">
