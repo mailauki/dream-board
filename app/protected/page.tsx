@@ -23,22 +23,8 @@ export default async function ProtectedPage() {
     return redirect('/sign-in')
   }
 
-  const displayName = user.user_metadata.display_name
-  const avatarUrl = user.user_metadata.avatar_url
-  const { count: dreamsCount } = await supabase
-    .from('dreams')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', user.id)
-  const { count: friendsCount } = await supabase
-    .from('friends')
-    .select('*', { count: 'exact', head: true })
-    .eq('accepted', true)
-    .or(`sent.eq.${user.id},received.eq.${user.id}`)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('user_id', user.id)
-    .single()
+  // const displayName = user.user_metadata.display_name
+  // const avatarUrl = user.user_metadata.avatar_url
 
   return (
     <>
@@ -51,8 +37,7 @@ export default async function ProtectedPage() {
         <div className="w-full">
           <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
             <InfoIcon size="16" strokeWidth={2} />
-          This is a protected page that you can only see as an authenticated
-          user
+						This is a protected page that you can only see as an authenticated user
           </div>
         </div>
       </Toolbar>
