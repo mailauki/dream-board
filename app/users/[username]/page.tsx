@@ -1,4 +1,5 @@
-import Avatar from '@/components/ui/avatar'
+// import Avatar from '@/components/ui/avatar'
+import { Avatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/utils/supabase/server'
 
@@ -27,7 +28,7 @@ export default async function UserPage({
   return (
     <div className='flex flex-col gap-y-4'>
       <div className=' flex flex-col items-center'>
-        <Avatar size={20} url={profile?.avatar_url} />
+        <Avatar size={'lg'} url={profile?.avatar_url || ''} />
         <h1 className='text-2xl mt-3'>{profile?.first_name} {profile?.last_name}</h1>
         <div className='flex gap-x-3 text-gray-600'>
           <p>@{username}</p>

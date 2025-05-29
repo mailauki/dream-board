@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 'use client'
 
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 import { createClient } from '@/utils/supabase/client'
@@ -9,7 +8,7 @@ import { createClient } from '@/utils/supabase/client'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Button } from './ui/button'
-import Avatar from './ui/avatar'
+import { Avatar } from './ui/avatar'
 
 export default function UploadAvatar({ url, uid }: { url?: string | null, uid: string }) {
   const supabase = createClient()
@@ -17,21 +16,24 @@ export default function UploadAvatar({ url, uid }: { url?: string | null, uid: s
   const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
-    async function downloadImage(path: string) {
+    async function getAvatar() {
       try {
-        const { data, error } = await supabase.storage.from('avatars').download(path)
+        const { data: avatar, error } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('user_id', uid)
+          .single()
 
         if (error) {
           throw error
         }
-        const url = URL.createObjectURL(data)
 
-        setAvatarUrl(url)
+        setAvatarUrl(avatar.avatar_url)
       } catch (error) {
         console.log('Error downloading image: ', error)
       }
     }
-    if (url) downloadImage(url)
+    getAvatar()
   }, [url, supabase])
 
   const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
@@ -69,17 +71,7 @@ export default function UploadAvatar({ url, uid }: { url?: string | null, uid: s
 
   return (
     <div className="mt-2 flex items-center gap-x-3">
-      {avatarUrl ? (
-        <Image
-          alt="Avatar"
-          className='rounded-full m-1'
-          height={40}
-          src={avatarUrl}
-          width={40}
-        />
-      ) : (
-        <Avatar />
-      )}
+      <Avatar url={avatarUrl || ''} />
       <div>
         <Button asChild variant={'outline'}>
           <Label htmlFor="avatar_file">

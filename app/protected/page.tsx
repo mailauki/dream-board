@@ -25,6 +25,11 @@ export default async function ProtectedPage() {
 
   // const displayName = user.user_metadata.display_name
   // const avatarUrl = user.user_metadata.avatar_url
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .single()
 
   return (
     <>
@@ -44,11 +49,10 @@ export default async function ProtectedPage() {
       <form>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
-            <h2 className="text-base/7 font-semibold text-gray-900">Profile</h2>
+            <h2 className="text-base/7 font-semibold">Profile</h2>
             <p className="mt-1 text-sm/6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
               <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
                 <Label htmlFor="profile-id">Profile ID</Label>
                 <Input
@@ -170,33 +174,6 @@ export default async function ProtectedPage() {
           </SubmitButton>
         </div>
       </form>
-
-      {/* <div className="flex-1 w-full flex flex-col gap-12">
-        <div className="flex flex-col gap-2 items-start">
-          <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-          <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-            {JSON.stringify(user, null, 2)}
-          </pre>
-          <div className="flex w-full max-w-xl flex-col items-start justify-between rounded border p-2">
-            <UploadAvatar uid={user.id} url={avatarUrl} />
-            <div>Dreams: <span>{dreamsCount}</span></div>
-            <div>Friends: <span>{friendsCount || 0}</span></div>
-            <div className='w-full'>
-              <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-                <Label htmlFor="display_name">Email</Label>
-                <Input readOnly aria-label='User email' defaultValue={user.email || ''} name='email' placeholder='your-email@gmail.com' />
-              </div>
-            </div>
-            <form className='w-full'>
-              <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3">
-                <Label htmlFor="display_name">Display name</Label>
-                <Input aria-label='User display name' defaultValue={displayName || ''} name='display_name' placeholder='John Doe' />
-              </div>
-              <SubmitButton formAction={updateUser} pendingText="Updating user...">Update user</SubmitButton>
-            </form>
-          </div>
-        </div>
-      </div> */}
     </>
   )
 }

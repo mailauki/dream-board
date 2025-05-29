@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/server'
 
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
-import Avatar from './ui/avatar'
+import { Avatar } from './ui/avatar'
 
 
 export default async function AuthButton() {

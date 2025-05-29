@@ -2,13 +2,13 @@ import { redirect } from 'next/navigation'
 import { PlusIcon, SearchIcon, XIcon } from 'lucide-react'
 
 import { createClient } from '@/utils/supabase/server'
-import Avatar from '@/components/ui/avatar'
 import UserChip from '@/components/ui/user-chip'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { acceptFriendRequest, denyFriendRequest } from '@/actions/friends'
 import { Label } from '@/components/ui/label'
 import Toolbar from '@/components/toolbar'
+import { Avatar } from '@/components/ui/avatar'
 
 export default async function FriendsPage() {
   const supabase = await createClient()
