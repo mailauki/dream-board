@@ -70,7 +70,7 @@ export default function UploadAvatar({ url, uid }: { url?: string | null, uid: s
   }
 
   return (
-    <div className="mt-2 flex items-center gap-x-3">
+    <div className="relative flex items-center gap-x-3">
       <Avatar url={avatarUrl || ''} />
       <div>
         <Button asChild variant={'outline'}>
@@ -80,13 +80,10 @@ export default function UploadAvatar({ url, uid }: { url?: string | null, uid: s
         </Button>
         <Input
           accept="image/*"
+          className='absolute hidden'
           disabled={uploading}
           id="avatar_file"
           name="avatar_file"
-          style={{
-            visibility: 'hidden',
-            position: 'absolute',
-          }}
           type="file"
           onChange={uploadAvatar}
         />

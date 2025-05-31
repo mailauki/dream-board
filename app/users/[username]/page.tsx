@@ -1,4 +1,5 @@
 import { sendFriendRequest } from '@/actions/friends'
+import { Container } from '@/components/layout/container'
 import { SubmitButton } from '@/components/submit-button'
 import { Avatar } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
@@ -40,46 +41,50 @@ export default async function UserPage({
   //  if isFriend & accepted -> friends
 
   return (
-    <div className='flex flex-col gap-y-4'>
-      <div className=' flex flex-col items-center'>
-        <Avatar size={'lg'} url={profile?.avatar_url || ''} />
-        <h1 className='text-2xl mt-3'>{profile?.first_name} {profile?.last_name}</h1>
-        {/* <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(friend, null, 2)}
-        </pre> */}
-        <div className='flex gap-x-3 text-gray-600'>
-          <p>@{username}</p>
-          <span>•</span>
-          <p>Joined {new Date(profile?.created_at || '').toLocaleString('default', { month: 'short', year: 'numeric' })}</p>
+    <Container className='pt-0' variant={'column'}>
+      <div className='relative w-full h-66'>
+        <div className='absolute w-full h-40 z-0 bg-accent' />
+        <div className='relative mt-28 h-40 z-10 w-full flex flex-col items-center'>
+          <Avatar size={'lg'} url={profile?.avatar_url || ''} />
+          <h1 className='text-2xl mt-3'>{profile?.first_name} {profile?.last_name}</h1>
+          <div className='flex gap-x-3 text-gray-600'>
+            <p>@{username}</p>
+            <span>•</span>
+            <p>Joined {new Date(profile?.created_at || '').toLocaleString('default', { month: 'short', year: 'numeric' })}</p>
+          </div>
         </div>
-        <div className='flex gap-x-4 items-center my-4'>
+      </div>
+      <Container className='px-0' variant={'grid'}>
+        <div className='lg:col-span-2 py-3 px-5'>
+          <h2 className='text-lg text-bold'>About</h2>
+          <p>{profile?.about}</p>
+        </div>
+        <div className='py-3 px-5'>
+          <div className='flex gap-x-4 items-center my-4'>
+            <form>
+              <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
+                <Label htmlFor="profile-id">Profile ID</Label>
+                <Input
+                  readOnly
+                  defaultValue={profile?.id}
+                  id='profile-id'
+                  name='profile-id'
+                  type='number'
+                />
+              </div>
+              <SubmitButton
+                disabled={isFriend || isRequestSent}
+                formAction={sendFriendRequest}
+                pendingText='Loading...'
+              >
+                {isFriend ? 'Friends' : isRequestSent ? 'Request sent' : 'Add friend'}
+              </SubmitButton>
+            </form>
+          </div>
           <div>Dreams: <span>{dreamsCount}</span></div>
           <div>Friends: <span>{friendsCount || 0}</span></div>
-          <form>
-            <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
-              <Label htmlFor="profile-id">Profile ID</Label>
-              <Input
-                readOnly
-                defaultValue={profile?.id}
-                id='profile-id'
-                name='profile-id'
-                type='number'
-              />
-            </div>
-            <SubmitButton
-              disabled={isFriend || isRequestSent}
-              formAction={sendFriendRequest}
-              pendingText='Loading...'
-            >
-              {isFriend ? 'Friends' : isRequestSent ? 'Request sent' : 'Add friend'}
-            </SubmitButton>
-          </form>
         </div>
-      </div>
-      <div>
-        <h2 className='text-lg text-bold'>About</h2>
-        <p>{profile?.about}</p>
-      </div>
-    </div>
+      </Container>
+    </Container>
   )
 }

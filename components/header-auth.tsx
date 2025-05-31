@@ -11,9 +11,7 @@ import { Avatar } from './ui/avatar'
 export default async function AuthButton() {
   const supabase = await createClient()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
 
   if (!hasEnvVars) {
     return (
@@ -55,7 +53,9 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4">
       Hey, {user.user_metadata.display_name || user.email}!
-      <Avatar size={'sm'} url={user.user_metadata.avatar_url} />
+      <Link href='/account'>
+        <Avatar size={'sm'} url={user.user_metadata.avatar_url} />
+      </Link>
     </div>
   ) : (
     <div className="flex gap-2">

@@ -14,7 +14,7 @@ import { Input } from './ui/input'
 import UserChip from './ui/user-chip'
 import { Avatar } from './ui/avatar'
 import { Button } from './ui/button'
-import Toolbar from './toolbar'
+import Toolbar from './layout/toolbar'
 
 export default function SearchInput() {
   const supabase = createClient()
@@ -45,8 +45,8 @@ export default function SearchInput() {
 
   return (
     <>
-      <Toolbar>
-        <form className='w-full'>
+      <Toolbar title='Friends'>
+        <form className='w-full max-w-md'>
           <Label className="relative block font-normal text-sm">
             <span className="absolute inset-y-0 left-0 flex items-center px-2">
               <SearchIcon size='16' />

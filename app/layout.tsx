@@ -35,28 +35,27 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
         >
-          <div className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-20 items-center">
-              <Navbar />
-              <main className="w-full flex flex-col gap-20 max-w-5xl p-5">
-                {children}
-              </main>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
 
-              <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-                <p>
+            <main className="w-full flex flex-col flex-1">
+              {children}
+            </main>
+
+            <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+              <p>
                   Powered by{' '}
-                  <Link
-                    className="font-bold hover:underline"
-                    href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
+                <Link
+                  className="font-bold hover:underline"
+                  href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
+                  rel="noreferrer"
+                  target="_blank"
+                >
                     Supabase
-                  </Link>
-                </p>
-                <ThemeSwitcher />
-              </footer>
-            </div>
+                </Link>
+              </p>
+              <ThemeSwitcher />
+            </footer>
           </div>
         </ThemeProvider>
       </body>

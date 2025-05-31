@@ -26,7 +26,7 @@ const avatarVariants = cva(
   },
 )
 const iconVariants = cva(
-  'rounded-full text-gray-100 dark:text-gray-800',
+  'rounded-full text-background',
   {
     variants: {
       size: {
