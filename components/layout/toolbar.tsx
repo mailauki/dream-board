@@ -12,7 +12,7 @@ export default function Toolbar({
       <Container variant={'row'}>
         {title && (
           <div className="flex-1">
-            <h1 className="text-3xl">{title}</h1>
+            <h1 className="text-2xl">{title}</h1>
           </div>
         )}
         {children}

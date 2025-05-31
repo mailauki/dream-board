@@ -3,7 +3,7 @@
 
 import type { Tables } from '@/types/supabase'
 
-import { MoreVerticalIcon, SearchIcon } from 'lucide-react'
+import { MoreVerticalIcon, SearchIcon, XIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
@@ -15,6 +15,7 @@ import UserChip from './ui/user-chip'
 import { Avatar } from './ui/avatar'
 import { Button } from './ui/button'
 import Toolbar from './layout/toolbar'
+import { Container } from './layout/container'
 
 export default function SearchInput() {
   const supabase = createClient()
@@ -65,24 +66,34 @@ export default function SearchInput() {
           </Label>
         </form>
       </Toolbar>
-      {/* <pre>{JSON.stringify(results, null, 2)}</pre> */}
-      <div className='flex flex-col gap-y-4'>
-        {results.map((user) => (
-          <UserChip
-            key={user.id}
-            action={
-              <Button asChild className='size-12' size={'icon'} variant={'secondary'}>
-                <Link href={`/users/${user.username}`}>
-                  <MoreVerticalIcon />
-                </Link>
-              </Button>
-            }
-            avatar={<Avatar url={user.avatar_url || ''} />}
-            subheader={user.username}
-            title={`${user.first_name} ${user.last_name || ''}`}
-          />
-        ))}
-      </div>
+      {results.length > 0 && (
+        <Container className='border min-h-10 my-10 rounded-lg gap-y-4' variant={'grid'}>
+          <div className='col-span-full flex justify-end'>
+            <Button
+              size={'icon'}
+              variant={'ghost'}
+              onClick={() => setValue('')}
+            >
+              <XIcon />
+            </Button>
+          </div>
+          {results.map((user) => (
+            <UserChip
+              key={user.id}
+              action={
+                <Button asChild className='size-12' size={'icon'} variant={'secondary'}>
+                  <Link href={`/users/${user.username}`}>
+                    <MoreVerticalIcon />
+                  </Link>
+                </Button>
+              }
+              avatar={<Avatar url={user.avatar_url || ''} />}
+              subheader={user.username}
+              title={`${user.first_name} ${user.last_name || ''}`}
+            />
+          ))}
+        </Container>
+      )}
     </>
   )
 }

@@ -1,3 +1,5 @@
+import { GiftIcon, UsersIcon } from 'lucide-react'
+
 import { sendFriendRequest } from '@/actions/friends'
 import { Container } from '@/components/layout/container'
 import { SubmitButton } from '@/components/submit-button'
@@ -59,30 +61,40 @@ export default async function UserPage({
           <h2 className='text-lg text-bold'>About</h2>
           <p>{profile?.about}</p>
         </div>
-        <div className='py-3 px-5'>
-          <div className='flex gap-x-4 items-center my-4'>
-            <form>
-              <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
-                <Label htmlFor="profile-id">Profile ID</Label>
-                <Input
-                  readOnly
-                  defaultValue={profile?.id}
-                  id='profile-id'
-                  name='profile-id'
-                  type='number'
-                />
-              </div>
-              <SubmitButton
-                disabled={isFriend || isRequestSent}
-                formAction={sendFriendRequest}
-                pendingText='Loading...'
-              >
-                {isFriend ? 'Friends' : isRequestSent ? 'Request sent' : 'Add friend'}
-              </SubmitButton>
-            </form>
+        <div className='border rounded-lg py-3 px-5 flex flex-col gap-y-3'>
+          <form>
+            <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
+              <Label htmlFor="profile-id">Profile ID</Label>
+              <Input
+                readOnly
+                defaultValue={profile?.id}
+                id='profile-id'
+                name='profile-id'
+                type='number'
+              />
+            </div>
+            <SubmitButton
+              disabled={isFriend || isRequestSent}
+              formAction={sendFriendRequest}
+              pendingText='Loading...'
+            >
+              {isFriend ? 'Friends' : isRequestSent ? 'Request sent' : 'Add friend'}
+            </SubmitButton>
+          </form>
+          <div className='bg-accent py-3 px-5 rounded-lg flex items-center justify-between gap-x-3'>
+            <div className='flex items-center gap-x-3'>
+              <span><GiftIcon size='20' /></span>
+              <span className='text-lg font-medium'>{dreamsCount || 0}</span>
+            </div>
+            <span className='text-xs'>dreams</span>
           </div>
-          <div>Dreams: <span>{dreamsCount}</span></div>
-          <div>Friends: <span>{friendsCount || 0}</span></div>
+          <div className='bg-accent py-3 px-5 rounded-lg flex items-center justify-between gap-x-3'>
+            <div className='flex items-center gap-x-3'>
+              <span><UsersIcon size='20' /></span>
+              <span className='text-lg font-medium'>{friendsCount || 0}</span>
+            </div>
+            <span className='text-xs'>friends</span>
+          </div>
         </div>
       </Container>
     </Container>

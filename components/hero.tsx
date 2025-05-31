@@ -1,44 +1,20 @@
-import NextLogo from './next-logo'
-import SupabaseLogo from './supabase-logo'
+import { Container } from './layout/container'
+import { Button } from './ui/button'
 
 export default function Header() {
   return (
-    <div className="flex flex-col gap-16 items-center">
-      <div className="flex gap-8 justify-center items-center">
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          rel="noreferrer"
-          target="_blank"
-        >
-          <SupabaseLogo />
-        </a>
-        <span className="border-l rotate-45 h-6" />
-        <a href="https://nextjs.org/" rel="noreferrer" target="_blank">
-          <NextLogo />
-        </a>
+    <Container className='flex-1 justify-center' size={'lg'} variant={'column'}>
+      <div className="text-center">
+        <h1 className="text-5xl font-medium tracking-tight text-balance text-gray-900 sm:text-7xl">
+          {'Welcome to '}
+          <span className='font-bold'>dream</span>
+          <span className='font-light'>board</span>
+        </h1>
+        <p className="mt-8 text-lg font-medium text-balance text-gray-500 sm:text-xl/8">Welcome to our app! Here you can create and manage your wishlists. Let's get started!</p>
+        <div className="mt-10 flex items-center justify-center gap-x-6">
+          <Button size={'lg'}>Get started</Button>
+        </div>
       </div>
-      <h1 className="sr-only">Supabase and Next.js Starter Template</h1>
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
-        The fastest way to build apps with{' '}
-        <a
-          className="font-bold hover:underline"
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Supabase
-        </a>{' '}
-        and{' '}
-        <a
-          className="font-bold hover:underline"
-          href="https://nextjs.org/"
-          rel="noreferrer"
-          target="_blank"
-        >
-          Next.js
-        </a>
-      </p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
-    </div>
+    </Container>
   )
 }

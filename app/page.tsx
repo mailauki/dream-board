@@ -1,16 +1,18 @@
 import Hero from '@/components/hero'
-import ConnectSupabaseSteps from '@/components/tutorial/connect-supabase-steps'
-import SignUpUserSteps from '@/components/tutorial/sign-up-user-steps'
-import { hasEnvVars } from '@/utils/supabase/check-env-vars'
 
 export default async function Home() {
   return (
     <>
       <Hero />
-      <main className="flex-1 flex flex-col gap-6 px-4">
-        <h2 className="font-medium text-xl mb-4">Next steps</h2>
-        {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-      </main>
+      {/* <Container variant={'column'}>
+        <h2 className="font-medium text-xl mb-4">Welcome to dreamboard</h2>
+        <p>Welcome to our app! Here you can create and manage your wishlists. Let's get started!</p>
+        <h2 className="font-medium text-xl mb-4">Bring your dreams to life</h2>
+        <p>Create a list of your dreams, goals, and desired acquisitions.</p>
+        <h2 className="font-medium text-xl mb-4">Inspire and support</h2>
+        <p>Invite friends to the app and track their wishes. Share your dreams and be inspired by each other's ideas.</p>
+        <div><Button>Start dreaming!</Button></div>
+      </Container> */}
     </>
   )
 }
