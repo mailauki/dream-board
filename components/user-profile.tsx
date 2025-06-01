@@ -1,9 +1,9 @@
-import { GiftIcon, UsersIcon } from 'lucide-react'
+import { GiftIcon, MoreVerticalIcon, PlusIcon, UsersIcon, XIcon } from 'lucide-react'
 import Link from 'next/link'
 
 import { Tables } from '@/types/supabase'
 import { signOutAction } from '@/actions/auth'
-import { sendFriendRequest } from '@/actions/friends'
+import { acceptFriendRequest, denyFriendRequest, sendFriendRequest } from '@/actions/friends'
 import { createClient } from '@/utils/supabase/server'
 
 import { Button } from './ui/button'
@@ -12,6 +12,8 @@ import { SubmitButton } from './submit-button'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { Avatar } from './ui/avatar'
+import LinkPreview from './link-preview'
+import UserChip from './ui/user-chip'
 
 
 export default async function Profile({
@@ -23,10 +25,19 @@ export default async function Profile({
 
   const { data: { user } } = await supabase.auth.getUser()
 
+  const { data: dreams } = await supabase
+    .from('dreams')
+    .select('*')
+    .eq('user_id', profile?.user_id || '')
   const { count: dreamsCount } = await supabase
     .from('dreams')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', profile?.user_id || '')
+  const { data: friends } = await supabase
+    .from('friends')
+    .select('id, accepted, created_at, from:profiles!friends_sender_id_fkey(*), to:profiles!friends_receiver_id_fkey(*)')
+    .eq('accepted', true)
+    .or(`sender_id.eq.${profile?.user_id},receiver_id.eq.${profile?.user_id}`)
   const { count: friendsCount } = await supabase
     .from('friends')
     .select('*', { count: 'exact', head: true })
@@ -60,7 +71,7 @@ export default async function Profile({
       </div>
       <Container className='px-0' variant={'grid'}>
         <div className='lg:col-span-2 py-3 px-5'>
-          <h2 className='text-lg text-bold'>About</h2>
+          <h2 className='text-lg font-semibold'>About</h2>
           <p>{profile?.about}</p>
         </div>
         <div className='border rounded-lg py-3 px-5 flex flex-col gap-y-3'>
@@ -112,6 +123,90 @@ export default async function Profile({
               <span className='text-xs'>friends</span>
             </Link>
           </Button>
+        </div>
+
+        <div className='lg:col-span-2 py-3 px-5'>
+          <h2 className='text-lg font-semibold'>Dreams</h2>
+          <Container className='px-0 lg:grid-cols-2 gap-y-8' variant={'grid'}>
+            {dreams && (dreamsCount! > 0) ? (
+              dreams.map(dream => <LinkPreview key={dream.id} data={dream} />)
+            ) : (
+              <div className='col-span-full flex flex-1 justify-center py-8'>
+                <p>No dreams yet.</p>
+              </div>
+            )}
+          </Container>
+        </div>
+        <div className='py-3 px-5'>
+          <h2 className='text-lg font-semibold'>Friends</h2>
+          {(friends && (friendsCount! > 0)) ? (
+            friends.map((friend) => (
+              friend.to?.user_id === profile?.user_id ? (
+                <UserChip
+                  key={friend?.id}
+                  action={friend.to?.user_id === user?.id ? (
+                    <form className='flex gap-x-2'>
+                      <div className="flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
+                        <Label htmlFor="friend-id">Friend ID</Label>
+                        <Input
+                          readOnly
+                          defaultValue={friend.id}
+                          id='friend-id'
+                          name='friend-id'
+                          type="number"
+                        />
+                      </div>
+                      {!friend.accepted && (
+                        <Button
+                          className='size-12'
+                          formAction={acceptFriendRequest}
+                          size={'icon'}
+                          variant={'accept'}
+                        >
+                          <PlusIcon />
+                        </Button>
+                      )}
+                      <Button
+                        className='size-12'
+                        formAction={denyFriendRequest}
+                        size={'icon'}
+                        variant={'deny'}
+                      >
+                        <XIcon />
+                      </Button>
+                    </form>
+                  ) : (
+                    <Button asChild className='size-12' size={'icon'} variant={'secondary'}>
+                      <Link href={`/${friend.from?.username}`}>
+                        <MoreVerticalIcon />
+                      </Link>
+                    </Button>
+                  )}
+                  avatar={<Avatar url={friend.from?.avatar_url || ''} />}
+                  subheader={friend.from?.username}
+                  title={`${friend.from?.first_name} ${friend.from?.last_name || ''}`}
+                />
+              ) : (
+                <UserChip
+                  key={friend?.id}
+                  action={
+                    <Button asChild className='size-12' size={'icon'} variant={'secondary'}>
+                      <Link href={`/${friend.to?.username}`}>
+                        <MoreVerticalIcon />
+                      </Link>
+                    </Button>
+                  }
+                  avatar={<Avatar url={friend.to?.avatar_url || ''} />}
+                  subheader={friend.to?.username}
+                  title={`${friend.to?.first_name} ${friend.to?.last_name || ''}`}
+                />
+              )
+            ))
+          ) : (
+            <div className='col-span-full flex flex-1 justify-center py-8'>
+              <p>No friends yet.</p>
+            </div>
+          )}
         </div>
       </Container>
     </Container>
