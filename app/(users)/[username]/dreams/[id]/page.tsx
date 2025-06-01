@@ -17,9 +17,9 @@ import { Container } from '@/components/layout/container'
 export default async function DreamItemPage({
   params,
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ username: string, id: string }>
 }) {
-  const { id } = await params
+  const { id, username } = await params
   const supabase = await createClient()
   const { data } = await supabase
     .from('dreams')
@@ -31,7 +31,7 @@ export default async function DreamItemPage({
     <>
       <Toolbar>
         <Button asChild variant={'ghost'}>
-          <Link href="/dreams">
+          <Link href={`/${username}/dreams`}>
             <span>
               <ChevronLeftIcon />
             </span>

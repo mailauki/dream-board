@@ -5,19 +5,27 @@ import Link from 'next/link'
 import { ArrowUpRightFromSquareIcon } from 'lucide-react'
 
 import { extractMetaTags, formatPrice } from '@/utils/helpers'
+import { createClient } from '@/utils/supabase/server'
 
 import { Button } from './ui/button'
 
 async function LinkPreview({ data }: { data: Tables<'dreams'> }) {
+  const supabase = await createClient()
   const meta = await extractMetaTags(data.url)
 
   if (!meta) {
     return <p>Failed to fetch link preview.</p>
   }
 
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', data.user_id)
+    .single()
+
   return (
     <div className="flex max-w-xl flex-col items-start justify-between rounded border p-2">
-      <Link href={`/dreams/${data.id}`}>
+      <Link href={`/${profile?.username}/dreams/${data.id}`}>
         <div className="relative flex w-full items-center gap-x-4">
           <img
             alt="Link Preview"
