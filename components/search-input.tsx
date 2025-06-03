@@ -3,16 +3,14 @@
 
 import type { Tables } from '@/types/supabase'
 
-import { MoreVerticalIcon, SearchIcon, XIcon } from 'lucide-react'
+import { SearchIcon, XIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 
 import { createClient } from '@/utils/supabase/client'
 
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import UserChip from './ui/user-chip'
-import { Avatar } from './ui/avatar'
 import { Button } from './ui/button'
 import Toolbar from './layout/toolbar'
 import { Container } from './layout/container'
@@ -67,7 +65,7 @@ export default function SearchInput() {
         </form>
       </Toolbar>
       {results.length > 0 && (
-        <Container className='border min-h-10 my-10 rounded-lg gap-y-4' variant={'grid'}>
+        <Container className='border min-h-10 my-10 rounded-lg gap-y-4 py-3 px-5' variant={'grid'}>
           <div className='col-span-full flex justify-end'>
             <Button
               size={'icon'}
@@ -78,19 +76,7 @@ export default function SearchInput() {
             </Button>
           </div>
           {results.map((user) => (
-            <UserChip
-              key={user.id}
-              action={
-                <Button asChild className='size-12' size={'icon'} variant={'secondary'}>
-                  <Link href={`/users/${user.username}`}>
-                    <MoreVerticalIcon />
-                  </Link>
-                </Button>
-              }
-              avatar={<Avatar url={user.avatar_url || ''} />}
-              subheader={user.username}
-              title={`${user.first_name} ${user.last_name || ''}`}
-            />
+            <UserChip key={user.id} user={user} />
           ))}
         </Container>
       )}

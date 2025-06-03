@@ -1,4 +1,6 @@
 import { redirect } from 'next/navigation'
+import { InfoIcon } from 'lucide-react'
+import Link from 'next/link'
 
 import { updateUser } from '@/actions/users'
 import { Container } from '@/components/layout/container'
@@ -10,9 +12,8 @@ import { Label } from '@/components/ui/label'
 import { TextArea } from '@/components/ui/textarea'
 import UploadAvatar from '@/components/upload-avatar'
 import { createClient } from '@/utils/supabase/server'
-import { signOutAction } from '@/actions/auth'
 
-export default async function AccountPage() {
+export default async function EditProfile() {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -31,18 +32,18 @@ export default async function AccountPage() {
 
   return (
     <>
-      <Toolbar title='Account'>
-        <form action={signOutAction}>
+      <Toolbar title='Profile'>
+        {/* <form action={signOutAction}>
           <Button type="submit" variant={'outline'}>
-									Sign out
+						Sign out
           </Button>
-        </form>
+        </form> */}
       </Toolbar>
       <form>
         <Container className='lg:grid-cols-2 gap-y-6' variant={'grid'}>
-          <div className='col-span-full w-full mt-4'>
-            <h2 className="text-base/7 font-semibold">Profile</h2>
-            <p className="mt-1 text-sm/6 text-gray-600">This information will be displayed publicly so be careful what you share.</p>
+          <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center col-span-full w-full mt-3">
+            <InfoIcon size="16" strokeWidth={2} />
+						This information will be displayed publicly so be careful what you share.
           </div>
 
           <div className="col-span-full flex flex-col gap-2 [&>input]:mb-3 mt-3 hidden">
@@ -121,12 +122,16 @@ export default async function AccountPage() {
           </div>
 
           <div className="col-span-full flex items-center justify-end gap-x-6 my-6">
-            <Button variant={'ghost'}>Cancel</Button>
+            <Button variant={'ghost'}>
+              <Link href='/'>
+                Cancel
+              </Link>
+            </Button>
             <SubmitButton
               formAction={updateUser}
               pendingText='Saving...'
             >
-						Save
+              Save
             </SubmitButton>
           </div>
         </Container>

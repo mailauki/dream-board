@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 import { createClient } from '@/utils/supabase/client'
 
 const avatarVariants = cva(
-  'inline-block rounded-full ring-2 ring-white bg-gray-300 dark:bg-gray-700 overflow-hidden border-gray-300 dark:border-gray-700 flex items-center justify-center',
+  'inline-block rounded-full ring-2 ring-white dark:ring-black bg-gray-300 dark:bg-gray-700 overflow-hidden border-gray-300 dark:border-gray-700 flex items-center justify-center',
   {
     variants: {
       size: {

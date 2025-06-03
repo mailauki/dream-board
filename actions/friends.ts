@@ -53,6 +53,8 @@ export const denyFriendRequest = async (formData: FormData) => {
   const supabase = await createClient()
   const friend_id = formData.get('friend-id')?.toString()
 
+  console.log(friend_id)
+
   const { error } = await supabase
     .from('friends')
     .delete()

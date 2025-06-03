@@ -10,7 +10,7 @@ const containerVariants = cva(
       variant: {
         default: 'flex justify-between items-center',
         row: 'flex flex-row justify-between items-center',
-        column: 'flex flex-col justify-between items-center',
+        column: 'flex flex-col justify-between items-center gap-y-4',
         grid: 'grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3'
       },
       size: {
