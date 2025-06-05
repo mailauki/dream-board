@@ -12,6 +12,7 @@ import LinkPreview from './link-preview'
 import UserChip from './ui/user-chip'
 import FriendButton from './friend-button'
 import FriendRequest from './friend-request'
+import { Stack } from './ui/stack'
 
 
 export default async function Profile({
@@ -62,7 +63,7 @@ export default async function Profile({
 
   return (
     <Container className='pt-0' variant={'column'}>
-      <div className='relative w-full h-66'>
+      {/* <div className='relative w-full h-66'>
         <div className='absolute w-full h-40 z-0 bg-accent' />
         <div className='relative mt-28 h-40 z-10 w-full flex flex-col items-center'>
           <Avatar size={'lg'} url={profile?.avatar_url || ''} />
@@ -92,8 +93,117 @@ export default async function Profile({
             <FriendButton friend={friend} profile_id={profile?.id} />
           )}
         </div>
+      </div> */}
+      {/* <div className='relative w-full h-66'>
+        <div className='absolute w-full h-40 z-0 bg-accent' />
+        <div className='relative z-10'>
+          <Avatar size={'lg'} url={profile?.avatar_url || ''} />
+        </div>
+      </div> */}
+      <div className='relative w-full h-66 mb-4'>
+        <div className='w-full h-40 z-0 bg-accent' />
+        <div className='absolute z-10 -bottom-10 left-10'>
+          <Avatar size={'lg'} url={profile?.avatar_url || ''} />
+        </div>
       </div>
-      <Container className='px-0' variant={'grid'}>
+      <Stack direction={'row'}>
+        <div>
+          <h1 className='text-2xl mt-3'>{profile?.first_name} {profile?.last_name}</h1>
+          <div className='flex gap-x-3 text-muted-foreground'>
+            <p>@{profile?.username}</p>
+            <span>•</span>
+            <p>Joined {new Date(profile?.created_at || '').toLocaleString('default', { month: 'short', year: 'numeric' })}</p>
+          </div>
+        </div>
+        {profile?.user_id === user?.id ? (
+          <div className='flex gap-3'>
+            <Button asChild>
+              <Link href='/edit-profile'>
+                <PencilIcon size={'16'} />
+									Edit profile
+              </Link>
+            </Button>
+            <form action={signOutAction}>
+              <Button type="submit" variant={'outline'}>
+									Sign out
+              </Button>
+            </form>
+          </div>
+        ) : (
+          <FriendButton friend={friend} profile_id={profile?.id} />
+        )}
+      </Stack>
+      <Stack direction={'row'}>
+        {profile?.about && <p className='mb-3 text-muted-foreground'>{profile.about}</p>}
+        <Stack className='border rounded-lg max-w-sm'>
+          <Button asChild className='w-full justify-between' variant={'secondary'}>
+            <Link href={`/${profile?.username}/dreams`}>
+              <div className='flex justify-between items-center gap-x-3'>
+                <span><GiftIcon size='20' /></span>
+                <span className='text-lg font-medium text-center min-w-8'>{dreamsCount || 0}</span>
+              </div>
+              <span className='text-xs'>dreams</span>
+            </Link>
+          </Button>
+          <Button asChild className='w-full justify-between' variant={'secondary'}>
+            <Link href='/friends'>
+              <div className='flex justify-between items-center gap-x-3'>
+                <span><UsersIcon size='20' /></span>
+                <span className='text-lg font-medium text-center min-w-8'>{friendsCount || 0}</span>
+              </div>
+              <span className='text-xs'>friends</span>
+            </Link>
+          </Button>
+        </Stack>
+        <div className='w-full max-w-sm mx-auto'>
+          <h2 className='text-lg font-semibold'>Friends</h2>
+          {profile?.user_id === user?.id && pendingFriends && (
+            <>
+              <div className='flex justify-between items-center text-xs uppercase'>
+                <div className='flex justify-between items-center gap-x-2'><h3 className='font-medium'>Requests</h3>
+                  <span className='bg-accent text-center min-w-4 p-0.5 px-1.5 rounded font-semibold'>
+                    {pendingFriendsCount || 0}
+                  </span>
+                </div>
+                <Button asChild className='text-xs' size={'sm'} variant={'link'}>
+                  <Link href='/friends'>See all</Link>
+                </Button>
+              </div>
+              {pendingFriends.length > 0 && (
+                <FriendRequest
+                  friend_id={pendingFriends[0].id}
+                  sender={pendingFriends[0].from}
+                />
+              )}
+            </>
+          )}
+          {(!friends || friends.length === 0) ? (
+            <div className='flex flex-1 justify-center py-8'>
+              <p>No friends yet</p>
+            </div>
+          ) : (
+            friends.map((friend) => (
+              friend.to?.user_id === profile?.user_id ? (
+                <UserChip key={friend.id} user={friend.from!} />
+              ) : (
+                <UserChip key={friend.id} user={friend.to!} />
+              )
+            )))}
+        </div>
+        <div className='w-full mx-auto'>
+          <h2 className='text-lg font-semibold'>Dreams</h2>
+          <Container className='px-0 gap-y-8' variant={'grid'}>
+            {dreams && (dreamsCount! > 0) ? (
+              dreams.map(dream => <LinkPreview key={dream.id} data={dream} />)
+            ) : (
+              <div className='col-span-full flex flex-1 justify-center py-8'>
+                <p>No dreams yet</p>
+              </div>
+            )}
+          </Container>
+        </div>
+      </Stack>
+      {/* <Container className='px-0' variant={'grid'}>
         <div className='lg:col-span-2 py-3 px-5'>
           <h2 className='text-lg font-semibold'>About</h2>
           <p>{profile?.about}</p>
@@ -170,7 +280,7 @@ export default async function Profile({
               )))}
           </Container>
         </Container>
-      </Container>
+      </Container> */}
     </Container>
   )
 }

@@ -11,7 +11,7 @@ const containerVariants = cva(
         default: 'flex justify-between items-center',
         row: 'flex flex-row justify-between items-center',
         column: 'flex flex-col justify-between items-center gap-y-4',
-        grid: 'grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3'
+        grid: 'grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3'
       },
       size: {
         default: 'max-w-5xl',
@@ -40,17 +40,3 @@ function Container({ className, variant, size, ...props }: ContainerProps) {
 Container.displayName = 'Container'
 
 export { Container, containerVariants }
-
-// export default function Container({
-//   children,
-// }: Readonly<{
-//   children?: React.ReactNode;
-// }>) {
-//   return (
-//     <div className="w-full max-w-5xl flex gap-20 justify-between items-center p-3 px-4">
-//       <div className="p-4">
-//         {children}
-//       </div>
-//     </div>
-//   )
-// }
